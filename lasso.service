@@ -1,0 +1,15 @@
+[Unit]
+Description=Lasso
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/home/lasso-marko-startkit/src
+ExecStartPre=/root/.nvm/versions/node/v7.1.0/bin/npm install
+ExecStart=/root/.nvm/versions/node/v7.1.0/bin/node server.js
+Restart=always
+RestartSec=500ms
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
