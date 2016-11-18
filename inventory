@@ -1,3 +1,2 @@
 [server]
-138.68.96.188 ansible_ssh_user=root
-46.101.237.251 ansible_ssh_user=root
+139.59.159.145 ansible_ssh_user=root

@@ -1,10 +1,10 @@
 [Unit]
-Description=Lasso
+Description=Mediator for lasso
 After=network.target
 
 [Service]
 User=root
-WorkingDirectory=/home/lasso-marko-startkit/src
+WorkingDirectory=/home/mediator
 ExecStartPre=/usr/bin/npm install
 ExecStart=/usr/bin/node server.js
 Restart=always

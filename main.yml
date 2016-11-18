@@ -2,52 +2,64 @@
 - hosts: server
   gather_facts: no
   tasks:
-  # - name: install python 2
-  #   raw: apt -y update && apt install -y python-minimal
-  # - name: Download ngrok
-  #   get_url:
-  #     url: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-  #     dest: /etc/ngrok.zip
-  # - name: Install unzip module
-  #   raw: apt install -y unzip
-  # - name: Install ngrok
-  #   shell: unzip /etc/ngrok.zip -d /bin creates=/bin/ngrok
-  # # install node js
-  # - name: install build-essential and libssl-dev
-  #   apt:
-  #     name: "{{item}}"
-  #   with_items:
-  #     - "build-essential"
-  #     - "libssl-dev"
-  #     - "git"
-  #     # - "npm"
-  #     # - "nodejs-legacy"
-  # - name: download install.sh
-  #   shell: curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash creates=/root/.nvm/install.sh
-  # - name: source ~/.profile
-  #   shell: source ~/.profile
-  #   args:
-  #     executable: /bin/bash
-  # - name: install nvm specific version
-  #   shell: bash -c '. /root/.nvm/nvm.sh;nvm install 7.1.0'
-  # - name: create symlink for node.js
-  #   shell: ln -n /root/.nvm/versions/node/v7.1.0/bin/node /usr/bin/node
-  # # clone git repository
-  # - name: clone lasso-marko-statrkit repository
-  #   git: repo=https://github.com/hesidoryn/lasso-marko-startkit.git dest=/home/lasso-marko-startkit
-  # # - name: install all dependencies
-  # #   shell: chdir=/home/lasso-marko-startkit npm install
-  # # install nginx
-  # - name: install nginx
-  #   apt: name=nginx
-  # - name: start nginx service
-  #   shell: systemctl start nginx
-  # # create lasso.service file
-  # - name: create lasso.service file
-  #   copy: src=lasso.service dest=/etc/systemd/system/lasso.service
-  # - name: daemon-reload
-  #   shell: systemctl daemon-reload
-  # - name: enable lasso.service
-  #   shell: systemctl enable lasso
+  - name: install python 2
+    raw: apt -y update && apt install -y python-minimal
+  - name: Download ngrok
+    get_url:
+      url: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+      dest: /etc/ngrok.zip
+  - name: Install unzip module
+    raw: apt install -y unzip
+  - name: Install ngrok
+    shell: unzip /etc/ngrok.zip -d /bin creates=/bin/ngrok
+  # install node js
+  - name: install build-essential and libssl-dev
+    apt:
+      name: "{{item}}"
+    with_items:
+      - "build-essential"
+      - "libssl-dev"
+      - "git"
+      # - "npm"
+      # - "nodejs-legacy"
+  - name: download install.sh
+    shell: curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash creates=/root/.nvm/install.sh
+  - name: source ~/.profile
+    shell: source ~/.profile
+    args:
+      executable: /bin/bash
+  - name: install nvm specific version
+    shell: bash -c '. /root/.nvm/nvm.sh;nvm install 7.1.0'
+  - name: create symlink for node.js
+    shell: ln -s /root/.nvm/versions/node/v7.1.0/bin/node /usr/bin/node -f
+  - name: create symlink for npm
+    shell: ln -s /root/.nvm/versions/node/v7.1.0/bin/npm /usr/bin/npm -f
+  # install nginx
+  - name: install nginx
+    apt: name=nginx
+  - name: start nginx service
+    shell: systemctl start nginx
+  # clone lasso repository
+  - name: clone lasso-marko-statrkit repository
+    git: repo=https://github.com/hesidoryn/lasso-marko-startkit.git dest=/home/lasso-marko-startkit
+  # create lasso.service file
+  - name: create lasso.service file
+    copy: src=lasso.service dest=/etc/systemd/system/lasso.service
+  - name: daemon-reload
+    shell: systemctl daemon-reload
+  - name: enable lasso.service
+    shell: systemctl enable lasso
   - name: start lasso.service
     shell: systemctl start lasso
+  # clone mediator repository
+  - name: clone mediator repository
+    git: repo=https://github.com/hesidoryn/mediator.git dest=/home/mediator
+  # create mediator.service file
+  - name: create mediator.service file
+    copy: src=mediator.service dest=/etc/systemd/system/mediator.service
+  - name: daemon-reload
+    shell: systemctl daemon-reload
+  - name: enable mediator.service
+    shell: systemctl enable mediator
+  - name: start mediator.service
+    shell: systemctl start mediator
