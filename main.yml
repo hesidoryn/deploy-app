@@ -20,8 +20,6 @@
       - "build-essential"
       - "libssl-dev"
       - "git"
-      # - "npm"
-      # - "nodejs-legacy"
   - name: download install.sh
     shell: curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash creates=/root/.nvm/install.sh
   - name: source ~/.profile
@@ -37,8 +35,16 @@
   # install nginx
   - name: install nginx
     apt: name=nginx
-  - name: start nginx service
-    shell: systemctl start nginx
+  - name: copy nginx.conf
+    copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  - name: create nginx/ssl folder
+    shell: mkdir -p /etc/nginx/ssl
+  - name: Generate self signed SSL certificates
+    shell: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/CN={{item}}" -keyout /etc/nginx/ssl/lasso.key -out /etc/nginx/ssl/lasso.crt
+    with_items:
+      - "{{inventory_hostname}}"
+  - name: restart nginx service
+    shell: systemctl restart nginx
   # clone lasso repository
   - name: clone lasso-marko-statrkit repository
     git: repo=https://github.com/hesidoryn/lasso-marko-startkit.git dest=/home/lasso-marko-startkit

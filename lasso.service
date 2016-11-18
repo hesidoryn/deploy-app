@@ -6,6 +6,7 @@ After=network.target
 User=root
 WorkingDirectory=/home/lasso-marko-startkit/src
 ExecStartPre=/usr/bin/npm install
+ExecStartPre=/usr/bin/npm run build
 ExecStart=/usr/bin/node server.js
 Restart=always
 RestartSec=500ms
